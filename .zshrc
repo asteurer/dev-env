@@ -112,28 +112,49 @@ source $ZSH/oh-my-zsh.sh
 # CUSTOM
 ##########################################################################
 
-# Golang
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:$HOME/go/bin
-
-# Kubectl aliases
-alias k="op document get kubeconfig --vault Dev | kubectl --kubeconfig=/dev/stdin"
-alias kdebug="k run -i --rm --tty debug --image=busybox --restart=Never -- sh"
-
-# Open kubectl edit in vscode
-export EDITOR='code --wait'
-
-# K9s
-alias k9s="/snap/k9s/current/bin/k9s"
-
-# Python shortcut
-alias py="python3"
-alias python="python3"
+#-------------------------------------------------------------------------
+# Misc
+#-------------------------------------------------------------------------
 
 # OpenVPN command
 alias vpn="sudo openvpn --config ~/.openvpn/config.ovpn"
 
 alias open="xdg-open"
+
+# Init new AWS creds
+alias iaws=" awsenv /home/andyboi/Repositories/System/refresh_aws/script.sh"
+
+# SQLite
+alias sql="sqlite3"
+
+#-------------------------------------------------------------------------
+# Golang
+#-------------------------------------------------------------------------
+
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/go/bin
+
+#-------------------------------------------------------------------------
+# Python
+#-------------------------------------------------------------------------
+
+# Python shortcut
+alias py="python3"
+alias python="python3"
+
+#-------------------------------------------------------------------------
+# Kubernetes
+#-------------------------------------------------------------------------
+
+# Gather all the paths in ~/.kube that end with ".config" and join them with colons (and removing trailing colon)
+alias kauth='export KUBECONFIG="$(find ~/.kube -type f -name "*.config" -printf "%p:")"; export KUBECONFIG="${KUBECONFIG%:}"'
+alias k="kubectl"
+alias kdebug="k run -i --rm --tty debug --image=busybox --restart=Never -- sh"
+alias k9s="/snap/k9s/current/bin/k9s"
+
+#-------------------------------------------------------------------------
+# 1Password
+#-------------------------------------------------------------------------
 
 # 1Password SSH Agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/1password/agent.sock"
@@ -145,11 +166,9 @@ export OP_ENV=/home/andyboi/.1password/
 # This is for passing the AWS credentials to a command that requires them
 alias awsenv="op run --env-file=$OP_ENV/aws.env --"
 
-# Init new AWS creds
-alias iaws=" awsenv /home/andyboi/Repositories/System/refresh_aws/script.sh"
-
-# SQLite
-alias sql="sqlite3"
+#-------------------------------------------------------------------------
+# Git
+#-------------------------------------------------------------------------
 
 # Git aliases
 alias giad="git add"
