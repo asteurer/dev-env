@@ -116,16 +116,19 @@ source $ZSH/oh-my-zsh.sh
 # Misc
 #-------------------------------------------------------------------------
 
-# OpenVPN command
-alias vpn="sudo openvpn --config ~/.openvpn/config.ovpn"
-
 alias open="xdg-open"
 
 # Init new AWS creds
-alias iaws=" awsenv /home/andyboi/Repositories/System/refresh_aws/script.sh"
+alias iaws=" awsenv ~/Repositories/System/refresh_aws/script.sh"
 
 # SQLite
 alias sql="sqlite3"
+
+# Update
+alias update="sudo apt update && sudo apt upgrade -y && sudo apt autoremove && sudo snap refresh"
+
+# Docker
+export DOCKER_HOST=unix:///run/docker.sock
 
 #-------------------------------------------------------------------------
 # Golang
@@ -146,11 +149,11 @@ alias python="python3"
 # Kubernetes
 #-------------------------------------------------------------------------
 
+alias k="kubectl"
 # Gather all the paths in ~/.kube that end with ".config" and join them with colons (and removing trailing colon)
 alias kauth='export KUBECONFIG="$(find ~/.kube -type f -name "*.config" -printf "%p:")"; export KUBECONFIG="${KUBECONFIG%:}"'
-alias k="kubectl"
-alias kdebug="k run -i --rm --tty debug --image=busybox --restart=Never -- sh"
-alias k9s="/snap/k9s/current/bin/k9s"
+alias kdebug="kubectl run -i --rm --tty debug --image=alpine --restart=Never -- sh"
+alias kctx="kubectl config use-context"
 
 #-------------------------------------------------------------------------
 # 1Password
@@ -161,7 +164,7 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/1password/agent.sock"
 export OP_PLUGIN_WRAPPER=/usr/local/bin/op
 
 # Path to OnePassword env files
-export OP_ENV=/home/andyboi/.1password/
+export OP_ENV=~/.1password
 
 # This is for passing the AWS credentials to a command that requires them
 alias awsenv="op run --env-file=$OP_ENV/aws.env --"
@@ -194,6 +197,7 @@ alias gibr="git --no-pager branch"
 # alias gisync="git pull upstream main --rebase"
 # alias gireflog="git reflog HEAD@{now}"
 # girei() { git rebase -i HEAD~$1 }
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
