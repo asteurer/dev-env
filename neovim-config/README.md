@@ -1,6 +1,7 @@
 # How to setup on your system
-- Symlink `neovim-config/nvim` to `~/.config/nvim`:
-    ```bash
-    ln -sf $(pwd)/init.lua ~/.config/nvim/init.lua
-    ln -sf $(pwd)/lazy-lock.json ~/.config/nvim/lazy-lock.json
-    ```
+
+In your terminal, navigate within the `neovim-config` directory. Then, you'll need to symlink `neovim-config/nvim` to `~/.config/nvim`:
+
+```sh
+ln -sf $(pwd) ~/.config/nvim
+```
