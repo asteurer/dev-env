@@ -17,37 +17,20 @@ sudo sed -i \
 #######################################
 
 echo "### Update Packages ###"
-
-if which dnf; then
-    sudo dnf update
-elif which apt; then
-    sudo apt update
-    sudo apt upgrade
-    sudo snap refresh
-fi
+sudo dnf update
 
 #######################################
 ###          Install git            ###
 #######################################
 
 echo "### Install git ###"
-
-if which dnf; then
-    sudo dnf install -y git
-elif which apt; then
-    sudo apt install -y git
-else
-    echo "Missing `dnf` or `apt` package manager"
-    exit 1
-fi
-
+sudo dnf install -y git
 
 #######################################
 ###          Install repo           ###
 #######################################
 
 echo "### Install repo ###"
-
 git clone https://github.com/asteurer/dev-env
 
 #######################################
@@ -55,18 +38,10 @@ git clone https://github.com/asteurer/dev-env
 #######################################
 
 echo "### Install zsh ###"
+sudo dnf install -y zsh
 
-if which dnf; then
-    sudo dnf install -y zsh
-elif which apt; then
-    sudo apt install -y zsh
-else
-    echo "Missing `dnf` or `apt` package manager"
-    exit 1
-fi
-
-# Symlink the config file
-ln -sf dev-env/.zshrc ~/.zshrc
+# Make zsh default
+sudo usermod --shell /bin/zsh asteurer
 
 
 #######################################
@@ -76,7 +51,7 @@ ln -sf dev-env/.zshrc ~/.zshrc
 echo "### Install OhMyZsh ###"
 
 # Install some helper tools
-sudo dnf install zsh-autosuggestions zsh-syntax-highlighting
+sudo dnf install -y zsh-autosuggestions zsh-syntax-highlighting
 
 # Install OhMyZsh
 curl -o install-oh-my-zsh.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
@@ -87,8 +62,9 @@ rm install-oh-my-zsh.sh
 # Install the theme
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
-# Symlink the config file
+# Symlink the config files
 ln -sf dev-env/.p10k.zsh ~/.p10k.zsh
+ln -sf dev-env/.zshrc ~/.zshrc
 
 #######################################
 ###         Install Docker          ###
@@ -96,53 +72,22 @@ ln -sf dev-env/.p10k.zsh ~/.p10k.zsh
 
 echo "### Install Docker ###"
 
-if which apt; then
     # Remove old versions of Docker
-    for pkg in \
-        docker.io \
-        docker-doc \
-        docker-compose \
-        docker-compose-v2 \
-        podman-docker \
-        containerd \
-        runc;
-    do sudo apt remove $pkg;
-    done
+sudo dnf remove docker \
+                docker-client \
+                docker-client-latest \
+                docker-common \
+                docker-latest \
+                docker-latest-logrotate \
+                docker-logrotate \
+                docker-selinux \
+                docker-engine-selinux \
+                docker-engine
 
-    # Add Docker's official GPG key:
-    sudo apt install ca-certificates curl
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-    # Add the repository to Apt sources:
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt update
-
-elif which dnf; then
-    # Remove old versions of Docker
-    sudo dnf remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-selinux \
-                  docker-engine-selinux \
-                  docker-engine
-
-    sudo dnf -y install dnf-plugins-core
-    sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-    sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    sudo systemctl enable --now docker
-else
-    echo "Missing `dnf` or `apt` package manager"
-    exit 1
-fi
+sudo dnf -y install dnf-plugins-core
+sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
 
 #######################################
 ###        Install Golang           ###
@@ -150,14 +95,7 @@ fi
 
 echo "### Install Golang ###"
 
-if which dnf; then
-    sudo dnf install -y golang
-elif which snap; then
-    sudo snap install go
-else
-    echo "Missing `dnf` or `snap` package manager"
-    exit 1
-fi
+sudo dnf install -y golang
 
 #######################################
 ###         Install Rust            ###
@@ -173,34 +111,20 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 echo "### Install tmux ###"
 
-if which dnf; then
-    sudo dnf install -y tmux
-elif which apt; then
-    sudo apt install -y tmux
-else
-    echo "Missing `dnf` or `snap` package manager"
-    exit 1
-fi
+sudo dnf install -y tmux
+ln -sf dev-env/.tmux.conf ~/.tmux.conf
 
-ln -sf dev-env/tmux/.tmux.conf ~/.tmux.conf
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # For the Dracula theme
+# Download and install the plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+~/.tmux/plugins/tpm/bin/install_plugins all
 
 #######################################
 ###         Install nvim            ###
 #######################################
 
 echo "### Install nvim"
-
-if which dnf; then
-    sudo dnf install -y neovim
-elif which apt; then
-    sudo apt install -y neovim
-else
-    echo "Missing `dnf` or `apt` package manager"
-    exit 1
-fi
-
-sudo ln -sf /usr/bin/vi /usr/bin/nvim
+sudo dnf install -y neovim
+sudo ln -sf /usr/bin/nvim /usr/bin/vi
 
 #######################################
 ###      Install 1Password CLI      ###
