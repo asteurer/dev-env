@@ -121,11 +121,12 @@ alias open="xdg-open"
 # Init new AWS creds
 alias iaws=" awsenv ~/Repositories/System/refresh_aws/script.sh"
 
-# SQLite
-alias sql="sqlite3"
-
 # Update
-alias update="sudo apt update && sudo apt upgrade -y && sudo apt autoremove && sudo snap refresh"
+alias update="sudo apt update \
+  && sudo apt upgrade -y \
+  && sudo apt autoremove \
+  && sudo snap refresh \
+  && rustup update"
 
 # Docker
 export DOCKER_HOST=unix:///run/docker.sock
