@@ -47,7 +47,7 @@ OP_VERSION="v$(curl https://app-updates.agilebits.com/check/1/0/CLI2/en/2.0.0/N 
 
 
 #######################################
-###       Install dev-env Repo      ###
+###      Install dev-env Repo       ###
 #######################################
 
 git clone https://github.com/asteurer/dev-env
