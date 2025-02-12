@@ -27,6 +27,14 @@ sudo dnf install -y \
 
 
 #######################################
+###          Configure git          ###
+#######################################
+
+git config --global user.email "andrew.steurer@cognizant.com"
+git config --global user.name "Andrew Steurer"
+
+
+#######################################
 ###      Install 1Password CLI      ###
 #######################################
 sudo dnf install -y unzip
@@ -66,7 +74,7 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-
 
 # Symlink the config files
 ln -sf dev-env/.p10k.zsh ~/.p10k.zsh
-ln -sf dev-env/.zshrc ~/.zshrc
+ln -sf dev-env/.zshrc_fedora_server ~/.zshrc
 
 #######################################
 ###         Install Docker          ###
