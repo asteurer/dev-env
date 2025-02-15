@@ -116,8 +116,6 @@ source $ZSH/oh-my-zsh.sh
 # Misc
 #-------------------------------------------------------------------------
 
-alias open="xdg-open"
-
 # Init new AWS creds
 alias iaws=" awsenv ~/Repositories/System/refresh_aws/script.sh"
 
@@ -152,6 +150,9 @@ alias kctx="kubectl config use-context"
 #-------------------------------------------------------------------------
 # 1Password
 #-------------------------------------------------------------------------
+
+# Export the OP_SERVICE_ACCOUNT_TOKEN
+alias op-auth='export OP_SERVICE_ACCOUNT_TOKEN=$(cat ~/.1password/op_service_account_token)'
 
 # Path to OnePassword env files
 export OP_ENV=~/.1password

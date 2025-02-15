@@ -23,20 +23,30 @@ sudo dnf install -y \
     zsh-syntax-highlighting \
     golang \
     tmux \
-    neovim
+    neovim \
+    htop
 
 
 #######################################
 ###          Configure git          ###
 #######################################
 
-git config --global user.email "andrew.steurer@cognizant.com"
+git config --global user.email "94206073+asteurer@users.noreply.github.com"
 git config --global user.name "Andrew Steurer"
-
 
 #######################################
 ###      Install 1Password CLI      ###
 #######################################
+
+# Place the OP_SERVICE_ACCOUNT_TOKEN
+if $OP_SERVICE_ACCOUNT_TOKEN == ""; then
+    echo "Missing `OP_SERVICED_ACCOUNT_TOKEN`"
+    exit 1
+fi
+mkdir -p ~/.1password
+echo "$OP_SERVICE_ACCOUNT_TOKEN" > ~/.1password/op_service_account_token
+chmod 400 ~/.1password/op_service_account_token # read-only by owner
+
 sudo dnf install -y unzip
 ARCH="amd64"; \
 OP_VERSION="v$(curl https://app-updates.agilebits.com/check/1/0/CLI2/en/2.0.0/N -s | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"; \
@@ -44,7 +54,6 @@ OP_VERSION="v$(curl https://app-updates.agilebits.com/check/1/0/CLI2/en/2.0.0/N 
     https://cache.agilebits.com/dist/1P/op2/pkg/"$OP_VERSION"/op_linux_"$ARCH"_"$OP_VERSION".zip \
     && sudo unzip -od /usr/local/bin/ op.zip \
     && rm op.zip
-
 
 #######################################
 ###      Install dev-env Repo       ###
@@ -112,9 +121,9 @@ sudo ln -sf /usr/bin/nvim /usr/bin/vi
 #######################################
 
 # If this doesn't work the first time, try regenerating the credential, entering it into 1Password, and try again
-sudo docker run -d cloudflare/cloudflared:latest tunnel \
-    --no-autoupdate run \
-    --token $(op item get dev_env_cf_tunnel_token --fields label=credential --vault DEV --reveal)
+# sudo docker run -d cloudflare/cloudflared:latest tunnel \
+#    --no-autoupdate run \
+#    --token $(op item get dev_env_cf_tunnel_token --fields label=credential --vault DEV --reveal)
 
 #######################################
 # Install Kubectl
