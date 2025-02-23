@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/1password/onepassword-sdk-go"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -12,54 +13,57 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 )
 
-type AdminCreds struct {
+type AwsVars struct {
 	AccessKeyId     string
 	SecretAccessKey string
 	MfaToken        string
 	SerialNumber    string
+	Region          string
+}
+
+type OpVars struct {
+	Token      string
+	VaultId    string
+	TempItemId string
 }
 
 func main() {
-	opToken := os.Getenv("OP_TOKEN")
-	vaultID := os.Getenv("OP_VAULT_ID")
-	adminItemID := os.Getenv("OP_ADMIN_ITEM_ID")
-	tempItemID := os.Getenv("OP_TEMP_ITEM_ID")
-	region := os.Getenv("AWS_REGION")
+	var awsVars AwsVars
+	var opVars OpVars
+	var missingEnvVars []string
+	parseEnv("OP_TOKEN", &missingEnvVars, &opVars.Token)
+	parseEnv("OP_VAULT_ID", &missingEnvVars, &opVars.VaultId)
+	parseEnv("OP_TEMP_ITEM_ID", &missingEnvVars, &opVars.TempItemId)
+	parseEnv("ACCESS_KEY_ID", &missingEnvVars, &awsVars.AccessKeyId)
+	parseEnv("SECRET_ACCESS_KEY", &missingEnvVars, &awsVars.SecretAccessKey)
+	parseEnv("MFA_TOKEN", &missingEnvVars, &awsVars.MfaToken)
+	parseEnv("MFA_SERIAL_NUMBER", &missingEnvVars, &awsVars.SerialNumber)
+	parseEnv("AWS_REGION", &missingEnvVars, &awsVars.Region)
+
+	if len(missingEnvVars) > 0 {
+		fmt.Println(
+			"ERROR: Missing the following env vars:\n" +
+				strings.Join(missingEnvVars, "\n") +
+				"\n",
+		)
+		os.Exit(1)
+	}
 
 	ctx := context.Background()
 
 	opClient, err := onepassword.NewClient(
 		ctx,
-		onepassword.WithServiceAccountToken(opToken),
+		onepassword.WithServiceAccountToken(opVars.Token),
 		onepassword.WithIntegrationInfo("OP Integration", "v0.0.1"),
 	)
 	if err != nil {
 		panic(err)
 	}
 
-	adminItem, err := opClient.Items.Get(ctx, vaultID, adminItemID)
-	if err != nil {
-		panic(err)
-	}
-
-	var adminCreds AdminCreds
-	for _, field := range adminItem.Fields {
-		switch v := field.Title; v {
-		case "one-time password":
-			adminCreds.MfaToken = *field.Details.OTP().Code
-		case "access_key":
-			adminCreds.AccessKeyId = field.Value
-		case "secret_access_key":
-			adminCreds.SecretAccessKey = field.Value
-		case "otp_arn":
-			adminCreds.SerialNumber = field.Value
-		}
-	}
-
-	awsCreds := credentials.NewStaticCredentialsProvider(adminCreds.AccessKeyId, adminCreds.SecretAccessKey, "")
+	awsCreds := credentials.NewStaticCredentialsProvider(awsVars.AccessKeyId, awsVars.SecretAccessKey, "")
 	awsConfig, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithCredentialsProvider(awsCreds),
-		config.WithRegion(region),
+		config.WithRegion(awsVars.Region),
 	)
 	if err != nil {
 		panic(err)
@@ -67,8 +71,8 @@ func main() {
 
 	stsClient := sts.NewFromConfig(awsConfig)
 	stsInput := &sts.GetSessionTokenInput{
-		SerialNumber: aws.String(adminCreds.SerialNumber),
-		TokenCode:    aws.String(adminCreds.MfaToken),
+		SerialNumber: aws.String(awsVars.SerialNumber),
+		TokenCode:    aws.String(awsVars.MfaToken),
 	}
 
 	stsOutput, err := stsClient.GetSessionToken(ctx, stsInput)
@@ -76,7 +80,7 @@ func main() {
 		panic(err)
 	}
 
-	tempItem, err := opClient.Items.Get(ctx, vaultID, tempItemID)
+	tempItem, err := opClient.Items.Get(ctx, opVars.VaultId, opVars.TempItemId)
 	if err != nil {
 		panic(err)
 	}
@@ -100,4 +104,13 @@ func main() {
 	}
 
 	fmt.Println("AWS credentials have been refreshed")
+}
+
+func parseEnv(envVar string, missingList *[]string, field *string) {
+	value := os.Getenv(envVar)
+	if value == "" {
+		*missingList = append(*missingList, envVar)
+	} else {
+		*field = value
+	}
 }

@@ -119,7 +119,7 @@ source $ZSH/oh-my-zsh.sh
 alias open="xdg-open"
 
 # Init new AWS creds
-alias iaws=" awsenv ~/Repositories/System/refresh_aws/script.sh"
+alias iaws="~/repos/dev-env/refresh_aws/script.sh"
 
 # Update
 alias update="sudo apt update \
@@ -159,6 +159,9 @@ alias kctx="kubectl config use-context"
 #-------------------------------------------------------------------------
 # 1Password
 #-------------------------------------------------------------------------
+
+# Test
+alias op-auth='export OP_SERVICE_ACCOUNT_TOKEN=$(cat ~/.1password/op_service_account_token)'
 
 # 1Password SSH Agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/1password/agent.sock"
