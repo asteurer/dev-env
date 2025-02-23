@@ -33,6 +33,12 @@ sudo dnf install -y \
 
 git config --global user.email "94206073+asteurer@users.noreply.github.com"
 git config --global user.name "Andrew Steurer"
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/gh_sign
+git config --global commit.gpgsign true
+git config --global core.editor "nvim -f"
+
+# Figure out how to sign commits using the op cli
 
 #######################################
 ###      Install 1Password CLI      ###
