@@ -100,16 +100,27 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 sudo ln -sf /usr/bin/nvim /usr/bin/vi
 
 #######################################
-###      Run CloudFlare Tunnel      ###
+###    Install Kubernetes Tools     ###
 #######################################
 
-# If this doesn't work the first time, try regenerating the credential, entering it into 1Password, and try again
-sudo docker run -d cloudflare/cloudflared:latest tunnel \
-    --no-autoupdate run \
-    --token $(op item get dev_env_cf_tunnel_token --fields label=credential --vault DEV --reveal)
+# secure ~/.kube/config
+ln -sf /dev/null ~/.kube/config
+
+# kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+if [[ $(echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check) != "kubectl: OK" ]]; then
+    echo "ERROR: kubectl binary didn't match sha256"
+    exit 1
+fi
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+rm kubectl kubectl.sha256
+
+# helm
+sudo dnf install -y helm
 
 #######################################
-# Install Kubectl
 # Configure git signing and auth keys
-# Configure SSHing into a cloudflare tunnel instance
+# Set up CI for aws-creds tool, and add the install command here
 #######################################
