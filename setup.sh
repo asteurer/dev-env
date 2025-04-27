@@ -37,7 +37,7 @@ sudo usermod --shell /bin/zsh $(whoami)
 # Install OhMyZsh
 curl -o install-oh-my-zsh.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 chmod +x install-oh-my-zsh.sh
-./install-oh-my-zsh.sh
+./install-oh-my-zsh.sh --unattended
 rm install-oh-my-zsh.sh
 
 # Install the theme
