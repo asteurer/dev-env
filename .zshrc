@@ -109,27 +109,15 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 ##########################################################################
-# CUSTOM
+###                         Custom Settings                            ###
 ##########################################################################
 
 #-------------------------------------------------------------------------
 # Misc
 #-------------------------------------------------------------------------
 
-alias open="xdg-open"
-
-# Init new AWS creds
-alias iaws=" awsenv ~/Repositories/System/refresh_aws/script.sh"
-
 # Update
-alias update="sudo apt update \
-  && sudo apt upgrade -y \
-  && sudo apt autoremove \
-  && sudo snap refresh \
-  && rustup update"
-
-# Docker
-export DOCKER_HOST=unix:///run/docker.sock
+alias update="sudo dnf -y update && rustup update"
 
 #-------------------------------------------------------------------------
 # Golang
@@ -155,20 +143,6 @@ alias k="kubectl"
 alias kauth='export KUBECONFIG="$(find ~/.kube -type f -name "*.config" -printf "%p:")"; export KUBECONFIG="${KUBECONFIG%:}"'
 alias kdebug="kubectl run -i --rm --tty debug --image=alpine --restart=Never -- sh"
 alias kctx="kubectl config use-context"
-
-#-------------------------------------------------------------------------
-# 1Password
-#-------------------------------------------------------------------------
-
-# 1Password SSH Agent
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/1password/agent.sock"
-export OP_PLUGIN_WRAPPER=/usr/local/bin/op
-
-# Path to OnePassword env files
-export OP_ENV=~/.1password
-
-# This is for passing the AWS credentials to a command that requires them
-alias awsenv="op run --env-file=$OP_ENV/aws.env --"
 
 #-------------------------------------------------------------------------
 # Git

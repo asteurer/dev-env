@@ -14,10 +14,8 @@ sudo sed -i \
 ###   Update and Install Packages   ###
 #######################################
 
-echo "### Update Packages ###"
 sudo dnf update
 sudo dnf install -y \
-    git \
     zsh \
     zsh-autosuggestions \
     zsh-syntax-highlighting \
@@ -25,31 +23,12 @@ sudo dnf install -y \
     tmux \
     neovim
 
-
-#######################################
-###      Install 1Password CLI      ###
-#######################################
-sudo dnf install -y unzip
-ARCH="amd64"; \
-OP_VERSION="v$(curl https://app-updates.agilebits.com/check/1/0/CLI2/en/2.0.0/N -s | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"; \
-    curl -sSfo op.zip \
-    https://cache.agilebits.com/dist/1P/op2/pkg/"$OP_VERSION"/op_linux_"$ARCH"_"$OP_VERSION".zip \
-    && sudo unzip -od /usr/local/bin/ op.zip \
-    && rm op.zip
-
-
-#######################################
-###       Install dev-env Repo      ###
-#######################################
-
-git clone https://github.com/asteurer/dev-env
-
 #######################################
 ###         Configure zsh           ###
 #######################################
 
 # Make zsh default
-sudo usermod --shell /bin/zsh asteurer
+sudo usermod --shell /bin/zsh $(whoami)
 
 #######################################
 # Install OhMyZsh
@@ -65,8 +44,8 @@ rm install-oh-my-zsh.sh
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
 # Symlink the config files
-ln -sf dev-env/.p10k.zsh ~/.p10k.zsh
-ln -sf dev-env/.zshrc ~/.zshrc
+ln -sf $(pwd)/.p10k.zsh ~/.p10k.zsh
+ln -sf $(pwd)/.zshrc ~/.zshrc
 
 #######################################
 ###         Install Docker          ###
@@ -87,7 +66,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ###         Configure tmux          ###
 #######################################
 
-ln -sf dev-env/.tmux.conf ~/.tmux.conf
+ln -sf $(pwd)/.tmux.conf ~/.tmux.conf
 
 # Download and install the plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -100,16 +79,34 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 sudo ln -sf /usr/bin/nvim /usr/bin/vi
 
 #######################################
-###      Run CloudFlare Tunnel      ###
+###         Configure git           ###
 #######################################
 
-# If this doesn't work the first time, try regenerating the credential, entering it into 1Password, and try again
-sudo docker run -d cloudflare/cloudflared:latest tunnel \
-    --no-autoupdate run \
-    --token $(op item get dev_env_cf_tunnel_token --fields label=credential --vault DEV --reveal)
+ln -sf $(pwd)/.gitconfig ~/.gitconfig
 
 #######################################
-# Install Kubectl
-# Configure git signing and auth keys
-# Configure SSHing into a cloudflare tunnel instance
+###       Install aws-creds         ###
 #######################################
+
+version=0.1.0
+wget https://github.com/asteurer/aws-creds/releases/download/$version/aws-creds-linux-amd64-$version.tar.gz
+tar -xvf aws-creds-linux-amd64-$version.tar.gz
+sudo mv aws-creds /usr/local/bin
+
+#######################################
+###       Install kubeconfig        ###
+#######################################
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+# Validate checksum
+if ! echo "$(cat kubectl.sha256) kubectl" | sha256sum --check; then
+    echo "Kubectl checksum verification failed! Exiting..."
+    exit 1
+fi
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# Remove files
+rm kubectl kubectl.sha256
