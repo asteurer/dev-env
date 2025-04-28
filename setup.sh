@@ -21,7 +21,8 @@ sudo dnf install -y \
     zsh-syntax-highlighting \
     golang \
     tmux \
-    neovim
+    neovim \
+    wget
 
 #######################################
 ###         Configure zsh           ###
