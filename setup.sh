@@ -22,7 +22,8 @@ sudo dnf -y install \
     golang \
     tmux \
     neovim \
-    wget
+    wget \
+    helm
 
 #######################################
 ###         Configure zsh           ###
