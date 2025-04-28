@@ -93,6 +93,7 @@ version=0.1.0
 wget https://github.com/asteurer/aws-creds/releases/download/$version/aws-creds-linux-amd64-$version.tar.gz
 tar -xvf aws-creds-linux-amd64-$version.tar.gz
 sudo mv aws-creds /usr/local/bin
+rm aws-creds-linux-amd64-$version.tar.gz
 
 #######################################
 ###       Install kubeconfig        ###
