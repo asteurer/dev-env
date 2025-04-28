@@ -14,8 +14,8 @@ sudo sed -i \
 ###   Update and Install Packages   ###
 #######################################
 
-sudo dnf update
-sudo dnf install -y \
+sudo dnf -y update
+sudo dnf -y install \
     zsh \
     zsh-autosuggestions \
     zsh-syntax-highlighting \
