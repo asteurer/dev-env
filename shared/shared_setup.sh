@@ -55,6 +55,13 @@ spin plugins update
 spin plugins install -y otel
 spin plugins install -y verman
 
+# For compiling Spin
+sudo dnf install -y \
+    openssl-devel \
+    c++
+rustup target add wasm32-wasip1
+rustup target add wasm32-wasip2
+
 # TinyGo
 tinygo_version=0.38.0
 wget https://github.com/tinygo-org/tinygo/releases/download/v$tinygo_version/tinygo$tinygo_version.linux-amd64.tar.gz
