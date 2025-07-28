@@ -1,0 +1,7 @@
+name: infra
+description: A Pulumi script for setting up a dev server
+runtime: go
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-go

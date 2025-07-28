@@ -1,5 +1,5 @@
 [user]
-	signingkey = /home/asteurer/.ssh/gh_sign
+	signingkey = ~/.ssh/gh_sign
 	email = 94206073+asteurer@users.noreply.github.com
 	name = Andrew Steurer
 [commit]
@@ -7,4 +7,4 @@
 [gpg]
 	format = ssh
 [core]
-	editor = vim
+	editor = vi
