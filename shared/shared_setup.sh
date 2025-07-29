@@ -83,8 +83,8 @@ spin plugins install -y verman
 sudo dnf install -y \
     openssl-devel \
     c++
-rustup target add wasm32-wasip1
-rustup target add wasm32-wasip2
+~/.cargo/bin/rustup target add wasm32-wasip1
+~/.cargo/bin/rustup target add wasm32-wasip2
 
 # TinyGo
 tinygo_version=0.38.0
@@ -97,10 +97,10 @@ rm tinygo$tinygo_version.linux-amd64.tar.gz
 curl https://wasmtime.dev/install.sh -sSf | bash
 
 # wasm-tools
-cargo install wasm-tools
+~/.cargo/bin/cargo install wasm-tools
 
 # wkg
-cargo install wkg
+~/.cargo/bin/cargo install wkg
 
 #######################################
 ###         Configure tmux          ###
