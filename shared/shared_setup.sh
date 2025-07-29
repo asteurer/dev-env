@@ -90,7 +90,7 @@ rustup target add wasm32-wasip2
 tinygo_version=0.38.0
 wget https://github.com/tinygo-org/tinygo/releases/download/v$tinygo_version/tinygo$tinygo_version.linux-amd64.tar.gz
 tar -xf tinygo$tinygo_version.linux-amd64.tar.gz
-sudo mv tinygo ~/tinygo/bin
+sudo mv tinygo ~
 rm tinygo$tinygo_version.linux-amd64.tar.gz
 
 # Wasmtime
