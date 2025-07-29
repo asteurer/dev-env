@@ -15,6 +15,30 @@ sudo dnf -y install \
     btop
 
 #######################################
+###         Configure zsh           ###
+#######################################
+
+# Make zsh default
+sudo usermod --shell /bin/zsh $(whoami)
+
+#######################################
+# Install OhMyZsh
+#######################################
+
+# Install OhMyZsh
+curl -o install-oh-my-zsh.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+chmod +x install-oh-my-zsh.sh
+./install-oh-my-zsh.sh --unattended
+rm install-oh-my-zsh.sh
+
+# Install theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+# Symlink config files
+ln -sf $(realpath ../shared/.p10k.zsh) ~/.p10k.zsh
+ln -sf $(realpath ../shared/.zshrc) ~/.zshrc
+
+#######################################
 ###         Install Docker          ###
 #######################################
 
@@ -32,7 +56,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 #######################################
 ###          Install Go             ###
 #######################################
-go_version=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
+go_version=$(curl -s https://go.dev/VERSION?m=text | head -n 1 | tr -d '\n')
 go_os_arch="linux-amd64"
 
 sudo rm -rf /usr/local/go
@@ -77,30 +101,6 @@ cargo install wasm-tools
 
 # wkg
 cargo install wkg
-
-#######################################
-###         Configure zsh           ###
-#######################################
-
-# Make zsh default
-sudo usermod --shell /bin/zsh $(whoami)
-
-#######################################
-# Install OhMyZsh
-#######################################
-
-# Install OhMyZsh
-curl -o install-oh-my-zsh.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-chmod +x install-oh-my-zsh.sh
-./install-oh-my-zsh.sh --unattended
-rm install-oh-my-zsh.sh
-
-# Install theme
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-
-# Symlink config files
-ln -sf $(realpath ../shared/.p10k.zsh) ~/.p10k.zsh
-ln -sf $(realpath ../shared/.zshrc) ~/.zshrc
 
 #######################################
 ###         Configure tmux          ###
