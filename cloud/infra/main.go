@@ -103,19 +103,27 @@ func main() {
 					Protocol:    pulumi.String("tcp"),
 					CidrBlocks:  pulumi.ToStringArray(netCfg.SSHIngressCidrs),
 				},
-				// HTTP access
+				// Jaeger access
 				&ec2.SecurityGroupIngressArgs{
 					Description: pulumi.String("HTTP"),
-					FromPort:    pulumi.Int(80),
-					ToPort:      pulumi.Int(80),
+					FromPort:    pulumi.Int(16686),
+					ToPort:      pulumi.Int(16686),
 					Protocol:    pulumi.String("tcp"),
 					CidrBlocks:  pulumi.ToStringArray(netCfg.HTTPIngressCidrs),
 				},
-				// HTTPS access
+				// Prometheus access
 				&ec2.SecurityGroupIngressArgs{
-					Description: pulumi.String("HTTPS"),
-					FromPort:    pulumi.Int(443),
-					ToPort:      pulumi.Int(443),
+					Description: pulumi.String("HTTP"),
+					FromPort:    pulumi.Int(9090),
+					ToPort:      pulumi.Int(9090),
+					Protocol:    pulumi.String("tcp"),
+					CidrBlocks:  pulumi.ToStringArray(netCfg.HTTPIngressCidrs),
+				},
+				// Grafana access
+				&ec2.SecurityGroupIngressArgs{
+					Description: pulumi.String("HTTP"),
+					FromPort:    pulumi.Int(5050),
+					ToPort:      pulumi.Int(5050),
 					Protocol:    pulumi.String("tcp"),
 					CidrBlocks:  pulumi.ToStringArray(netCfg.HTTPIngressCidrs),
 				},
