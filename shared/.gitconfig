@@ -1,0 +1,10 @@
+[user]
+	signingkey = ~/.ssh/gh_sign
+	email = 94206073+asteurer@users.noreply.github.com
+	name = Andrew Steurer
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[core]
+	editor = vi
