@@ -54,6 +54,10 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 # Remove files
 rm kubectl kubectl.sha256
 
+# I'm setting the .kube/config file to /dev/null to ensure that my `kauth` alias is used instead
+mkdir -p ~/.kube
+ln -sf /dev/null ~/.kube/config
+
 #######################################
 ###       Install minio client      ###
 #######################################
