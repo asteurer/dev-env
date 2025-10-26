@@ -3,7 +3,6 @@
 #######################################
 ###       Install dnf packages      ###
 #######################################
-
 sudo dnf -y upgrade
 sudo dnf -y install \
     zsh \
@@ -17,14 +16,12 @@ sudo dnf -y install \
 #######################################
 ###         Configure zsh           ###
 #######################################
-
 # Make zsh default
 sudo usermod --shell /bin/zsh $(whoami)
 
 #######################################
 # Install OhMyZsh
 #######################################
-
 # Install OhMyZsh
 curl -o install-oh-my-zsh.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 chmod +x install-oh-my-zsh.sh
@@ -41,7 +38,6 @@ ln -sf $(realpath ../shared/.zshrc) ~/.zshrc
 #######################################
 ###         Install Docker          ###
 #######################################
-
 sudo dnf -y install dnf-plugins-core
 sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -50,7 +46,6 @@ sudo systemctl enable --now docker
 #######################################
 ###         Install Rust            ###
 #######################################
-
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 #######################################
@@ -68,7 +63,6 @@ rm "${go_version}.${go_os_arch}.tar.gz"
 #######################################
 ###     Install Spin + friends      ###
 #######################################
-
 # Spin
 mkdir spin && cd spin
 curl -fsSL https://spinframework.dev/downloads/install.sh | bash
@@ -105,7 +99,6 @@ curl https://wasmtime.dev/install.sh -sSf | bash
 #######################################
 ###         Configure tmux          ###
 #######################################
-
 ln -sf $(realpath ../shared/.tmux.conf) ~/.tmux.conf
 
 # Download and install plugins
@@ -115,11 +108,9 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 #######################################
 ###         Configure nvim          ###
 #######################################
-
 sudo ln -sf /usr/bin/nvim /usr/bin/vi
 
 #######################################
 ###         Configure git           ###
 #######################################
-
 ln -sf $(realpath ../shared/.gitconfig) ~/.gitconfig

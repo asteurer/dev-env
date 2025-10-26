@@ -118,28 +118,23 @@ source $ZSH/oh-my-zsh.sh
 #-------------------------------------------------------------------------
 # Misc
 #-------------------------------------------------------------------------
-
-# Update
 alias update="sudo dnf -y update && rustup update"
 
 #-------------------------------------------------------------------------
 # Golang
 #-------------------------------------------------------------------------
-
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
 
 #-------------------------------------------------------------------------
 # Rust
 #-------------------------------------------------------------------------
-
 alias cb="cargo build"
 alias cbr="cargo build --release"
 
 #-------------------------------------------------------------------------
 # Spin
 #-------------------------------------------------------------------------
-
 export PATH=$PATH:$HOME/tinygo/bin
 export PATH=$HOME/.spin_verman/versions/current_version:$PATH
 export WASMTIME_HOME="$HOME/.wasmtime"
@@ -148,16 +143,12 @@ export PATH="$WASMTIME_HOME/bin:$PATH"
 #-------------------------------------------------------------------------
 # Python
 #-------------------------------------------------------------------------
-
-# Python shortcut
 alias py="python3"
 alias python="python3"
 
 #-------------------------------------------------------------------------
 # Git
 #-------------------------------------------------------------------------
-
-# Git aliases
 alias giad="git add"
 alias gist="git status"
 alias gich="git checkout"
@@ -183,3 +174,7 @@ girei() { git rebase -i HEAD~$1 }
 # alias gisync="git pull upstream main --rebase"
 # alias gireflog="git reflog HEAD@{now}"
 
+#-------------------------------------------------------------------------
+# SSH
+#-------------------------------------------------------------------------
+sshauth(){eval $(ssh-agent) && ssh-add ~/.ssh/$1}

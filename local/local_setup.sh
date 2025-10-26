@@ -3,13 +3,11 @@
 #######################################
 ###      Run shared scripts         ###
 #######################################
-
 ./../shared/shared_setup.sh
 
 #######################################
 ###        Configure Access         ###
 #######################################
-
 # Remove the ability to log in with a password or as root (this only applies to ssh servers)
 sshd_config="/etc/ssh/sshd_config"
 if [[ -f "$sshd_config" ]]; then
@@ -22,14 +20,12 @@ fi
 #######################################
 ###       Install dnf packages      ###
 #######################################
-
 sudo dnf -y install \
     helm
 
 #######################################
 ###       Install aws-creds         ###
 #######################################
-
 version=0.1.0
 wget https://github.com/asteurer/aws-creds/releases/download/$version/aws-creds-linux-amd64-$version.tar.gz
 tar -xvf aws-creds-linux-amd64-$version.tar.gz
@@ -39,7 +35,6 @@ rm aws-creds-linux-amd64-$version.tar.gz
 #######################################
 ###       Install kubectl           ###
 #######################################
-
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 
@@ -61,7 +56,6 @@ ln -sf /dev/null ~/.kube/config
 #######################################
 ###       Install minio client      ###
 #######################################
-
 curl https://dl.min.io/client/mc/release/linux-amd64/mc -o mc
 chmod +x mc
 sudo mv mc /usr/local/bin
@@ -74,7 +68,6 @@ curl -fsSL https://get.pulumi.com | sh
 #######################################
 ###    Addtl config for .zshrc      ###
 #######################################
-
 # Create a copy of the .zshrc.template file
 cp ../shared/.zshrc.template ../shared/.zshrc
 
@@ -83,7 +76,6 @@ cat >> ../shared/.zshrc <<'EOF'
 #-------------------------------------------------------------------------
 # Kubernetes
 #-------------------------------------------------------------------------
-
 alias k="kubectl"
 # Gather all the paths in ~/.kube that end with ".config" and join them with colons (and removing trailing colon)
 alias kauth='export KUBECONFIG="$(find ~/.kube -type f -name "*.config" -printf "%p:")"; export KUBECONFIG="${KUBECONFIG%:}"'
@@ -93,6 +85,6 @@ alias kctx="kubectl config use-context"
 #-------------------------------------------------------------------------
 # Pulumi
 #-------------------------------------------------------------------------
-
 export PATH=$PATH:$HOME/.pulumi/bin
+
 EOF
