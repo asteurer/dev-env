@@ -11,7 +11,8 @@ sudo dnf -y install \
     tmux \
     neovim \
     wget \
-    btop
+    btop \
+    just
 
 #######################################
 ###         Configure zsh           ###
