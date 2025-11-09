@@ -4,7 +4,6 @@
 - Trailing Spaces
 - Dracula Theme Official
 - Todo Tree
-    - Apend `|todo!` to `settings -> todo tree regex` to mark `todo!()` macros in Rust
 
 # Golang
 - Go

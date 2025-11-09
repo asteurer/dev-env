@@ -1,0 +1,13 @@
+{
+    "workbench.colorTheme": "Dracula Theme",
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!",
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true
+    },
+    "go.toolsManagement.autoUpdate": true,
+    "window.menuBarVisibility": "compact",
+    "workbench.startupEditor": "none",
+    "files.insertFinalNewline": true
+}
