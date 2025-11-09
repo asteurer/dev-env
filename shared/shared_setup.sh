@@ -51,14 +51,14 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ##################
 ### Install Go ###
 ##################
-go_version=$(curl -s https://go.dev/VERSION?m=text | head -n 1 | tr -d '\n')
-go_os_arch="linux-amd64"
+go_version=$(curl -s "https://go.dev/VERSION?m=text" | head -n 1 | tr -d '\n')
+go_filename="$go_version.linux-amd64.tar.gz"
 
 sudo rm -rf /usr/local/go
 
-wget -q "https://go.dev/dl/${go_version}.${go_os_arch}.tar.gz"
-sudo tar -C /usr/local -xzf "${go_version}.${go_os_arch}.tar.gz"
-rm "${go_version}.${go_os_arch}.tar.gz"
+curl -o "$go_filename" -fsSL  "https://go.dev/dl/$go_filename"
+sudo tar -C /usr/local -xzf "$go_filename"
+rm "$go_filename"
 
 ########################
 ### Wasm Development ###
