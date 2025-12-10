@@ -79,13 +79,6 @@ sudo dnf install -y \
     c++
 ~/.cargo/bin/rustup target add wasm32-wasip1 wasm32-wasip2
 
-# TinyGo
-tinygo_version=0.38.0
-wget https://github.com/tinygo-org/tinygo/releases/download/v$tinygo_version/tinygo$tinygo_version.linux-amd64.tar.gz
-tar -xf tinygo$tinygo_version.linux-amd64.tar.gz
-sudo mv tinygo ~
-rm tinygo$tinygo_version.linux-amd64.tar.gz
-
 # Wasmtime
 curl https://wasmtime.dev/install.sh -sSf | bash
 
@@ -113,3 +106,10 @@ sudo ln -sf /usr/bin/nvim /usr/bin/vi
 ### Configure git ###
 #####################
 ln -sf $(realpath ../shared/.gitconfig) ~/.gitconfig
+
+########################
+### Configure Github ###
+########################
+sudo dnf -y install dnf5-plugins
+sudo dnf -y config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+sudo dnf install gh --repo gh-cli
