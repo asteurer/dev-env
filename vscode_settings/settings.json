@@ -6,6 +6,7 @@
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
         "editor.formatOnSave": true
     },
+    "rust-analyzer.check.command": "clippy",
     "go.toolsManagement.autoUpdate": true,
     "window.menuBarVisibility": "compact",
     "workbench.startupEditor": "none",
