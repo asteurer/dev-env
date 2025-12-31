@@ -12,5 +12,6 @@
     "workbench.startupEditor": "none",
     "files.insertFinalNewline": true,
     "claudeCode.preferredLocation": "panel",
-    "terminal.integrated.suggest.enabled": false
+    "terminal.integrated.suggest.enabled": false,
+    "workbench.secondarySideBar.defaultVisibility": "hidden"
 }

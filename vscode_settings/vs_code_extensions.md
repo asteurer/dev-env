@@ -1,6 +1,7 @@
 # General Development
 - Error Lens
 - Project Manager
+- Claude
 - Trailing Spaces
 - Dracula Theme Official
 - Todo Tree
