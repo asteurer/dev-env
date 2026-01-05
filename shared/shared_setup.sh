@@ -112,4 +112,4 @@ ln -sf $(realpath ../shared/.gitconfig) ~/.gitconfig
 ########################
 sudo dnf -y install dnf5-plugins
 sudo dnf -y config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
-sudo dnf install gh --repo gh-cli
+sudo dnf -y install gh --repo gh-cli
