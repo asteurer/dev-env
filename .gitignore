@@ -1,2 +1,4 @@
 *.dev.yaml
 *.zshrc
+*.pulumi
+Pulumi.*.yaml
