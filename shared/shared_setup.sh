@@ -35,14 +35,6 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-
 ln -sf $(realpath ../shared/.p10k.zsh) ~/.p10k.zsh
 ln -sf $(realpath ../shared/.zshrc) ~/.zshrc
 
-######################
-### Install Docker ###
-######################
-sudo dnf -y install dnf-plugins-core
-sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo systemctl enable --now docker
-
 ####################
 ### Install Rust ###
 ####################
@@ -113,3 +105,18 @@ ln -sf $(realpath ../shared/.gitconfig) ~/.gitconfig
 sudo dnf -y install dnf5-plugins
 sudo dnf -y config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
 sudo dnf -y install gh --repo gh-cli
+
+######################
+### Install Docker ###
+######################
+sudo dnf -y install dnf-plugins-core
+sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo usermod -a -G docker $USER
+sudo newgrp docker
+
+######################
+### Reboot machine ###
+######################
+sudo reboot
